@@ -56,8 +56,8 @@ public class JournalService {
             User user = _usersService.findByUserName(userName);
             user.getUserJournals().removeIf(x -> x.getId().equals(id));
             journalRepository.deleteById(id);
-            // induce some error
-            user.setPassword(null);
+            // // induce some error
+            // user.setPassword(null);
             _usersService.saveEntry(user);
             return true;
         } catch (Exception e) {

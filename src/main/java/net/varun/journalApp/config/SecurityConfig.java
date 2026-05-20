@@ -24,7 +24,10 @@ public class SecurityConfig {
                         .antMatchers(
                                 "/journal/**", "/users/**")
                         .authenticated()
-                        .anyRequest().permitAll())
+                        .antMatchers(
+                                "/admin/**")
+                        .hasRole("ADMIN")
+                        .anyRequest().denyAll())
                 .httpBasic(withDefaults())
                 .sessionManagement(management -> management
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // Stateless API

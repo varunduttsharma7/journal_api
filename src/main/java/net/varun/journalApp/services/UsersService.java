@@ -36,6 +36,12 @@ public class UsersService {
         userRepo.save(user);
     }
 
+    public void addAdmin(@NonNull User user) {
+        user.setRoles(Arrays.asList("USER", "ADMIN"));
+        user.setPassword(encoder.encode(user.getPassword()));
+        userRepo.save(user);
+    }
+
     public List<User> findAll() {
         return userRepo.findAll();
     }

@@ -19,19 +19,21 @@ import net.varun.journalApp.Entities.User;
 import net.varun.journalApp.services.UsersService;
 
 @RestController
-@RequestMapping("users")
-public class UsersController {
+@RequestMapping("admin")
+public class AdminController {
 
     @Autowired
     private UsersService _usersService;
 
-    @PutMapping
-    public ResponseEntity<?> UpdateUser(@RequestBody User user) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userName = authentication.getName();
-        if (_usersService.UpdateUser(user, userName)) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    @GetMapping("users")
+    public ResponseEntity<List<User>> getUsers() {
+        List<User> users = _usersService.findAll();
+        return new ResponseEntity<List<User>>(users, HttpStatus.OK);
+    }
+
+    @PostMapping("add")
+    public ResponseEntity<?> AddAdmin(@RequestBody @NonNull User user) {
+        _usersService.addAdmin(user);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
