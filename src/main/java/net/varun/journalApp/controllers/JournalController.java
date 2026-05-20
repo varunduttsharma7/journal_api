@@ -6,6 +6,8 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,40 +27,47 @@ public class JournalController {
     @Autowired
     private JournalService _journalService;
 
-    @GetMapping
-    public Collection<Journal> GetEntries() {
-        return _journalService.findAll();
-    }
+    // @GetMapping
+    // public Collection<Journal> GetEntries() {
+    // return _journalService.findAll();
+    // }
 
-    @GetMapping("{userName}")
-    public ResponseEntity<?> GetJournalsByUserName(@PathVariable String userName) {
+    @GetMapping
+    public ResponseEntity<?> GetJournalsByUserName() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
         List<Journal> journal = _journalService.findByUser(userName);
         if (journal.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<List<Journal>>(journal, HttpStatus.OK);
     }
 
-    @PostMapping("{userName}")
-    public ResponseEntity<?> AddJournalByUser(@PathVariable String userName, @RequestBody Journal journal) {
+    @PostMapping
+    public ResponseEntity<?> AddJournalByUser(@RequestBody Journal journal) {
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
         if (_journalService.AddJournalByUser(userName, journal)) {
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity<?> UpdateJournal(@PathVariable ObjectId id, @RequestBody Journal journal) {
-        if (_journalService.UpdateJournal(journal)) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    // @PutMapping("{id}")
+    // public ResponseEntity<?> UpdateJournal(@PathVariable ObjectId id,
+    // @RequestBody Journal journal) {
+    // if (_journalService.UpdateJournal(journal)) {
+    // return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    // }
+    // return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    // }
 
-    @PutMapping("{userName}/{id}")
-    public ResponseEntity<?> UpdateJournalByUser(@PathVariable String userName, @PathVariable ObjectId id,
+    @PutMapping("{id}")
+    public ResponseEntity<?> UpdateJournalByUser(@PathVariable ObjectId id,
             @RequestBody Journal journal) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
         if (_journalService.UpdateJournalByUser(userName, id, journal)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -66,12 +75,9 @@ public class JournalController {
     }
 
     @DeleteMapping("{id}")
-    public Boolean DeleteJournal(@PathVariable ObjectId id) {
-        return _journalService.deleteById(id);
-    }
-
-    @DeleteMapping("{userName}/{id}")
-    public ResponseEntity<?> deleteByUserNameAndId(@PathVariable String userName, @PathVariable ObjectId id) {
+    public ResponseEntity<?> deleteByUserNameAndId(@PathVariable ObjectId id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
         _journalService.deleteByUserNameAndId(userName, id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
