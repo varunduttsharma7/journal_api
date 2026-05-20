@@ -1,0 +1,94 @@
+[
+  {
+    "description": "Clean previous build files",
+    "command": "mvn clean"
+  },
+  {
+    "description": "Compile project",
+    "command": "mvn compile"
+  },
+  {
+    "description": "Run tests",
+    "command": "mvn test"
+  },
+  {
+    "description": "Package app into JAR",
+    "command": "mvn package"
+  },
+  {
+    "description": "Install JAR into local Maven repo",
+    "command": "mvn install"
+  },
+  {
+    "description": "Run Spring Boot app",
+    "command": "mvn spring-boot:run"
+  },
+  {
+    "description": "Run Spring Boot app in debug mode",
+    "command": "mvn spring-boot:run -Dspring-boot.run.jvmArguments=\"-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005\""
+  },
+  {
+    "description": "Skip tests while packaging",
+    "command": "mvn package -DskipTests"
+  },
+  {
+    "description": "Clean and package project",
+    "command": "mvn clean package"
+  },
+  {
+    "description": "Clean and install project",
+    "command": "mvn clean install"
+  },
+  {
+    "description": "Show dependency tree",
+    "command": "mvn dependency:tree"
+  },
+  {
+    "description": "Resolve/download dependencies",
+    "command": "mvn dependency:resolve"
+  },
+  {
+    "description": "Force update dependencies",
+    "command": "mvn clean install -U"
+  },
+  {
+    "description": "Show effective POM",
+    "command": "mvn help:effective-pom"
+  },
+  {
+    "description": "Show Maven and Java version",
+    "command": "mvn -version"
+  },
+  {
+    "description": "Run specific test class",
+    "command": "mvn -Dtest=UserServiceTest test"
+  },
+  {
+    "description": "Run specific test method",
+    "command": "mvn -Dtest=UserServiceTest#shouldCreateUser test"
+  },
+  {
+    "description": "Build without running tests",
+    "command": "mvn clean package -Dmaven.test.skip=true"
+  },
+  {
+    "description": "Generate project from archetype",
+    "command": "mvn archetype:generate"
+  },
+  {
+    "description": "Verify project lifecycle",
+    "command": "mvn verify"
+  },
+  {
+    "description": "Run app with Spring profile",
+    "command": "mvn spring-boot:run -Dspring-boot.run.profiles=dev"
+  },
+  {
+    "description": "Run app with custom arguments",
+    "command": "mvn spring-boot:run -Dspring-boot.run.arguments=\"--server.port=8081\""
+  },
+  {
+    "description": "Create Docker image using Spring Boot",
+    "command": "mvn spring-boot:build-image"
+  }
+]
