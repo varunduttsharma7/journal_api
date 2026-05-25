@@ -1,30 +1,31 @@
 package net.varun.journalApp.services;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
-
 import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import net.varun.journalApp.Entities.Journal;
+import lombok.extern.slf4j.Slf4j;
 import net.varun.journalApp.Entities.User;
-import net.varun.journalApp.repository.JournalRepository;
 import net.varun.journalApp.repository.UsersRepository;
 
 @Service
+@Slf4j
 public class UsersService {
 
     @Autowired
     private UsersRepository userRepo;
 
     private static final PasswordEncoder encoder = new BCryptPasswordEncoder();
+
+    // private static final Logger logger =
+    // LoggerFactory.getLogger(UsersService.class);
 
     public void saveEntry(@NonNull User user) {
         userRepo.save(user);
@@ -43,6 +44,10 @@ public class UsersService {
     }
 
     public List<User> findAll() {
+        log.info("info Logging from slf4j");
+        log.error("error Logging from slf4j");
+        log.warn("warn Logging from slf4j");
+        log.debug("debug Logging from slf4j");
         return userRepo.findAll();
     }
 
