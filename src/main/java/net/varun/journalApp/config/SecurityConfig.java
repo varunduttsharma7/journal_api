@@ -15,31 +15,33 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(csrf -> csrf.disable()) // Disable CSRF for API endpoints
-                .authorizeRequests(requests -> requests
-                        // .antMatchers("/users/**").permitAll() // Allow user registration without auth
-                        .antMatchers(
-                                "/journal/**", "/users/**")
-                        .authenticated()
-                        .antMatchers(
-                                "/admin/**")
-                        .hasRole("ADMIN")
-                        .anyRequest().denyAll())
-                .httpBasic(withDefaults())
-                .sessionManagement(management -> management
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // Stateless API
+        @Bean
+        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+                http
+                                .csrf(csrf -> csrf.disable()) // Disable CSRF for API endpoints
+                                .authorizeRequests(requests -> requests
+                                                // .antMatchers("/users/**").permitAll() // Allow user registration
+                                                // without auth
+                                                .antMatchers(
+                                                                "/journal/**", "/users/**")
+                                                .authenticated()
+                                                .antMatchers(
+                                                                "/admin/**")
+                                                .hasRole("ADMIN")
+                                                .anyRequest().authenticated())
+                                .httpBasic(withDefaults())
+                                .sessionManagement(management -> management
+                                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // Stateless
+                                                                                                          // API
 
-        http.csrf(x -> x.disable());
+                http.csrf(x -> x.disable());
 
-        return http.build();
-    }
+                return http.build();
+        }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+        @Bean
+        public PasswordEncoder passwordEncoder() {
+                return new BCryptPasswordEncoder();
+        }
 
 }
