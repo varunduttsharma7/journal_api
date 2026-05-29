@@ -1,5 +1,6 @@
 package net.varun.journalApp.services;
 
+import net.varun.journalApp.config.AppCache;
 import net.varun.journalApp.externalEntities.ExternalPost;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,11 +18,13 @@ public class ExternalAPIService {
     @Autowired
     RestTemplate template;
 
-    @Value("${external.api.fake}")
-    public String baseUrl;
+//    @Value("${external.api.fake}")
+//    public String baseUrl;
+    @Autowired
+    public AppCache cache;
 
     public List<ExternalPost> getPosts(){
-        ExternalPost[] posts = template.getForObject(baseUrl + "posts", ExternalPost[].class);
+        ExternalPost[] posts = template.getForObject(cache.appCache.get("POST_API") + "posts", ExternalPost[].class);
         return Arrays.asList(posts != null ? posts : new ExternalPost[0]);
     }
 }
