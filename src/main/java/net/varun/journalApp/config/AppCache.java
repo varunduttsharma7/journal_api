@@ -14,20 +14,21 @@ import java.util.Map;
 @Component
 public class AppCache {
 
-    public enum keys{
+    public enum keys {
         POST_API;
     }
+
     @Autowired
     public ExternalRepository externalRepository;
 
     public Map<String, String> appCache;
 
     @PostConstruct
-    public void GetExternalUrl(){
-        appCache=new HashMap<>();
-        List<External> data=externalRepository.findAll();
-        for (External external:data){
-            appCache.put(external.getKey(),external.getValue());
+    public void GetExternalUrl() {
+        appCache = new HashMap<>();
+        List<External> data = externalRepository.findAll();
+        for (External external : data) {
+            appCache.put(external.getKey(), external.getValue());
         }
     }
 }
