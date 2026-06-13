@@ -1,5 +1,6 @@
 package net.varun.journalApp.controllers;
 
+import net.varun.journalApp.repository.NewUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +14,16 @@ import lombok.NonNull;
 import net.varun.journalApp.Entities.User;
 import net.varun.journalApp.services.UsersService;
 
+import java.awt.*;
+
 @RestController
 @RequestMapping("public")
 public class PublicController {
     @Autowired
     private UsersService _usersService;
+
+    @Autowired
+    private NewUserRepository newUserRepository;
 
     @PostMapping("users")
     public ResponseEntity<?> AddUser(@RequestBody @NonNull User user) {
@@ -28,5 +34,10 @@ public class PublicController {
     @GetMapping("health")
     public String healthCheck() {
         return "Ok";
+    }
+
+    @GetMapping("test-user")
+    public ResponseEntity<?> getMatchedUser() {
+        return new ResponseEntity<>(newUserRepository.getUsersForSentimentAnalysis(),HttpStatus.OK);
     }
 }
